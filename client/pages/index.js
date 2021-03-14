@@ -12,6 +12,7 @@ LandingPage.getInitialProps = async ({req}) => {
     if(typeof window === 'undefined') {
         // executed on the server - setup ingress access.
         const {data} = await axios.get(INGRESS + '/api/users/currentuser', {
+            //Most importantly: Host = ticketing.dev, cookie (auth)
             headers: req.headers
         });
         // {currentUser: {...}}
