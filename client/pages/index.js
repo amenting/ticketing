@@ -1,34 +1,13 @@
-import axios from 'axios';
-
-// could create an external name service to map that name to a simpler domain
-const INGRESS = 'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local';
-const DOMAIN = 'ticketing.dev';
+import buildClient from '../api/build-client';
 
 const LandingPage = ({currentUser}) => {
     return <h1>Landing Page</h1>;
 }
 
-LandingPage.getInitialProps = async ({req}) => {
-    if(typeof window === 'undefined') {
-        // executed on the server - setup ingress access.
-        const {data} = await axios.get(INGRESS + '/api/users/currentuser', {
-            //Most importantly: Host = ticketing.dev, cookie (auth)
-            headers: req.headers
-        });
-        // {currentUser: {...}}
-        return data;
-    } else {
-        // executed on the browser
-        const {data} = await axios.get('/api/users/currentuser');
-        // {currentUser: {...}}
-        return data;
-    }
-    return({});
-    /*const cookie = 'todo';
-    const response = await axios.get(BASE + '/api/users/currentuser');
-    console.log(response);
-    return response.data;
-    */
+LandingPage.getInitialProps = async (context) => {
+    const client = buildClient(context);
+    const { data } = await client.get('/api/users/currentUser');
+    return data; // {currentUser: {...}}
 };
 
 export default LandingPage;
