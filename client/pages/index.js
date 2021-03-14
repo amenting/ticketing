@@ -5,18 +5,16 @@ const INGRESS = 'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local
 const DOMAIN = 'ticketing.dev';
 
 const LandingPage = ({currentUser}) => {
-    console.log(currentUser);
     return <h1>Landing Page</h1>;
 }
 
-LandingPage.getInitialProps = async () => {
+LandingPage.getInitialProps = async ({req}) => {
     if(typeof window === 'undefined') {
         // executed on the server - setup ingress access.
         const {data} = await axios.get(INGRESS + '/api/users/currentuser', {
-            headers: {
-                Host: 'ticketing.dev'
-            }
+            headers: req.headers
         });
+        // {currentUser: {...}}
         return data;
     } else {
         // executed on the browser
