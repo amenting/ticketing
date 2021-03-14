@@ -1,18 +1,20 @@
 import request from 'supertest';
 import { app } from '../../app';
 import { Ticket } from '../../model/ticket';
+import mongoose from 'mongoose';
 
 it('returns a 404 if the ticket is not found', async () => {
-    await request(app)
-        .get('/api/tickets/nottthere')
-        .send()
-        .expect(404);
+    const id = new mongoose.Types.ObjectId().toHexString();
+    const response = await request(app)
+        .get(`/api/tickets/${id}`)
+        .send();
+    expect(response.status).toEqual(404);
 });
 
 it('returns the ticket if the ticket is found', async () => {
     const title = 'concert';
     const price = 20;
-    
+
     const response = await request(app)
         .post('/api/tickets')
         .set('Cookie', global.signin())
