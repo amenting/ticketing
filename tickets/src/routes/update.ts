@@ -40,7 +40,10 @@ router.put('/api/tickets/:id',
         price: req.body.price
     });
     await ticket.save();
-    new TicketUpdatedPublisher(natsWrapper.client).publish({
+    // should really save the event to an event queue
+    // in a transaction with the ticket
+    // and then send the event in another process...
+    await new TicketUpdatedPublisher(natsWrapper.client).publish({
         id: ticket.id,
         title: ticket.title,
         price: ticket.price,
