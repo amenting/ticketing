@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@amenting-tickets/common": "^1.0.8",
     "@types/node": "^14.14.35",
     "node-nats-streaming": "^0.3.2",
     "ts-node-dev": "^1.1.6",
