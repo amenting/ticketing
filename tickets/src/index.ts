@@ -3,17 +3,31 @@ import { app } from './app';
 import { natsWrapper} from './nats-wrapper';
 
 const start = async () => {
-    if(!process.env.JWT_KEY) {
+    const env = process.env;
+    if(!env.JWT_KEY) {
         throw new Error('JWT_KEY must be defined. '+
             'Try: kubectl create secret generic jwt-secret --from-literal=JWT_KEY=somekey');
     }
-    if(!process.env.MONGO_URI) {
+    if(!env.MONGO_URI) {
         throw new Error('MONGO_URI must be defined. '+
             'Try: adding it to the env section of k8s.');
     }
+    if(!env.NATS_CLIENT_ID) {
+        throw new Error('NATS_CLIENT_ID must be defined');
+    }
+    if(!env.NATS_CLUSTER_ID) {
+        throw new Error('NATS_CLUSTER_ID must be defined');
+    }
+    if(!env.NATS_URL) {
+        throw new Error('NATS_URL must be defined');
+    }
 
     try {
-        await natsWrapper.connect('ticketing', 'laskjf', 'http://nats-srv:4222');
+        await natsWrapper.connect(
+            env.NATS_CLUSTER_ID,
+            env.NATS_CLIENT_ID,
+            env.NATS_URL
+        );
         natsWrapper.client.on('close', () => {
             console.log('NATS connection closed!');
             process.exit();
@@ -21,7 +35,7 @@ const start = async () => {
         process.on('SIGINT', () => natsWrapper.client.close());
         process.on('SIGTERM', () => natsWrapper.client.close());
 
-        await mongoose.connect(process.env.MONGO_URI, {
+        await mongoose.connect(env.MONGO_URI, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useCreateIndex: true
