@@ -7,7 +7,7 @@ import {
     NotAuthorizedError
 } from '@amenting-tickets/common';
 import { Ticket } from '../model/ticket';
-import { natsWrapper } from './nats-wrapper';
+import { natsWrapper } from '../nats-wrapper';
 import { TicketUpdatedPublisher } from '../events/ticket-updated-publisher';
 
 const router = express.Router();
