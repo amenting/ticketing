@@ -1,5 +1,6 @@
 import { OrderStatus } from '@amenting-tickets/common';
 import mongoose, { Mongoose } from 'mongoose';
+import { TicketDoc } from './ticket';
 
 // An interface that describes the properties
 // that are requried to create a new Order
