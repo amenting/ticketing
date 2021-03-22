@@ -7,7 +7,7 @@ import { OrderStatus } from '@amenting-tickets/common';
 it('returns a 404 if the order is not found', async () => {
     const id = new mongoose.Types.ObjectId().toHexString();
     const response = await request(app)
-        .get(`/api/orders/${id}`)
+        .delete(`/api/orders/${id}`)
         .set('Cookie', global.signin())
         .send();
     expect(response.status).toEqual(404);
@@ -28,7 +28,7 @@ it('returns a 401 if the user is trying to get another users order', async () =>
         .expect(201);
 
     await request(app)
-        .get(`/api/orders/${order.id}`)
+        .delete(`/api/orders/${order.id}`)
         .set('Cookie', global.signin())
         .send()
         .expect(401);
