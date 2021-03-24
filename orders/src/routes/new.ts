@@ -4,7 +4,7 @@ import { BadRequestError, NotFoundError, OrderStatus, Publisher, requireAuth, va
 import { body } from 'express-validator';
 import { Ticket } from '../model/ticket';
 import { Order } from '../model/order';
-import { OrderCreatedPublisher } from '../publishers/order-created-publisher';
+import { OrderCreatedPublisher } from '../events/publishers/order-created-publisher';
 import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
