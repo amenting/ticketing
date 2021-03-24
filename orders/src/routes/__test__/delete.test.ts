@@ -3,6 +3,7 @@ import { app } from '../../app';
 import { Ticket } from '../../model/ticket';
 import mongoose from 'mongoose';
 import { OrderStatus } from '@amenting-tickets/common';
+import { natsWrapper } from '../../nats-wrapper';
 
 it('returns a 404 if the order is not found', async () => {
     const id = new mongoose.Types.ObjectId().toHexString();
@@ -65,4 +66,34 @@ it('cancels the order', async () => {
     expect(fetchedOrder.status).toEqual(OrderStatus.Cancelled);
 });
 
-it.todo('emits an order cancelled event');
+it('emits an order cancelled event', async () => {
+    const ticket = Ticket.build({
+        title: 'some',
+        price: 29
+    });
+    await ticket.save();
+    const cookie = global.signin();
+    const {body: order} = await request(app)
+        .post('/api/orders')
+        .set('Cookie', cookie)
+        .send({
+            ticketId: ticket.id
+        })
+        .expect(201);
+
+    await request(app)
+        .delete(`/api/orders/${order.id}`)
+        .set('Cookie', cookie)
+        .send()
+        .expect(204);
+
+    const { body: fetchedOrder } = await request(app)
+        .get(`/api/orders/${order.id}`)
+        .set('Cookie', cookie)
+        .send()
+        .expect(200);
+
+    expect(fetchedOrder.id).toEqual(order.id);
+    expect(fetchedOrder.status).toEqual(OrderStatus.Cancelled);
+    expect(natsWrapper.client.publish).toHaveBeenCalled();
+});
