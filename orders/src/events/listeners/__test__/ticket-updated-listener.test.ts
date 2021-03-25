@@ -57,3 +57,16 @@ it('acks the message', async () => {
     // write assertions to make sure ack function is called
     expect(msg.ack).toBeCalled();
 });
+
+it('rejects an out of order (non-sequence-version) event', async () => {
+    const { listener, ticket, data, msg } = await setup();
+    // call the onMessage function with the data object + message object
+    data.version+=10;
+    try {
+        await listener.onMessage(data, msg);
+    } catch(err) {
+
+    }
+    // write assertions to make sure the ack function was not called.
+    expect(msg.ack).not.toHaveBeenCalled();
+});
