@@ -20,6 +20,7 @@ interface TicketModel extends mongoose.Model<TicketDoc> {
 // An interface that describes the properties
 // that a Ticket Document has
 export interface TicketDoc extends mongoose.Document {
+  version: number;
   title: string;
   price: number;
   isReserved(): Promise<boolean>;

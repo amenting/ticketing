@@ -8,7 +8,7 @@ import {
 } from '@amenting-tickets/common';
 import { Ticket } from '../model/ticket';
 import { natsWrapper } from '../nats-wrapper';
-import { TicketUpdatedPublisher } from '../events/ticket-updated-publisher';
+import { TicketUpdatedPublisher } from '../events/publishers/ticket-updated-publisher';
 
 const router = express.Router();
 
