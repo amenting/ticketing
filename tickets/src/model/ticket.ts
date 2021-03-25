@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { updateIfCurrentPlugin} from 'mongoose-update-if-current';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
 // An interface that describes the properties
 // that are requried to create a new Ticket
