@@ -13,6 +13,7 @@ interface TicketAttrs {
 // that a Ticket Model has
 interface TicketModel extends mongoose.Model<TicketDoc> {
   build(attrs: TicketAttrs): TicketDoc;
+  findByEvent(event: { id: string, version: number }): Promise<TicketDoc | null>;
 }
 
 // An interface that describes the properties
@@ -22,6 +23,7 @@ interface TicketDoc extends mongoose.Document {
   price: number;
   userId: string;
   version: number;
+  orderId?: string;
 }
 
 const ticketSchema = new mongoose.Schema({
@@ -36,6 +38,9 @@ const ticketSchema = new mongoose.Schema({
   userId: {
     type: String,
     required: true
+  },
+  orderId: {
+    type: String
   }
 }, {
   toJSON: {
@@ -53,6 +58,13 @@ ticketSchema.plugin(updateIfCurrentPlugin);
 ticketSchema.statics.build = (attrs: TicketAttrs) => {
   return new Ticket(attrs);
 };
+
+ticketSchema.statics.findByEvent = (event: { id: string, version: number}) => {
+  return Ticket.findOne({
+    _id: event.id,
+    version: event.version -1
+  })
+}
 
 const Ticket = mongoose.model<TicketDoc, TicketModel>('Ticket', ticketSchema);
 
