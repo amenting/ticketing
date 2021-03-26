@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 
 const createOrder = async (userId: string) => {
     const ticket = Ticket.build({
+        id: mongoose.Types.ObjectId().toHexString(),
         title: 'test ticket',
         price: 1
     });

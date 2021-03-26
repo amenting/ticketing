@@ -14,6 +14,7 @@ it('returns a 404 if the order is not found', async () => {
 
 it('returns a 401 if the user is trying to get another users order', async () => {
     const ticket = Ticket.build({
+        id: mongoose.Types.ObjectId().toHexString(),
         title: 'some',
         price: 29
     });
@@ -35,6 +36,7 @@ it('returns a 401 if the user is trying to get another users order', async () =>
 
 it('returns the order', async () => {
     const ticket = Ticket.build({
+        id: mongoose.Types.ObjectId().toHexString(),
         title: 'some',
         price: 29
     });
