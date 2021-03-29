@@ -17,8 +17,8 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
             throw new Error('Order not found');
         }
         
-        if(order.status != OrderStatus.AwaitingPayment) {
-            throw new Error('Order is not awaiting payment.');
+        if(order.status != OrderStatus.Complete) {
+            msg.ack();
         }
         
         order.set({
