@@ -1,4 +1,6 @@
+import { OrderCreatedListener } from './events/listeners/order-created-listener';
 import { natsWrapper} from './nats-wrapper';
+import { expirationQueue } from './queues/expiration-queues';
 
 const start = async () => {
     const env = process.env;
@@ -24,6 +26,9 @@ const start = async () => {
         });
         process.on('SIGINT', () => natsWrapper.client.close());
         process.on('SIGTERM', () => natsWrapper.client.close());
+
+        new OrderCreatedListener(natsWrapper.client).listen();
+
     } catch (err) {
         console.error(err);
     }
