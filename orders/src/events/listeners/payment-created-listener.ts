@@ -19,6 +19,9 @@ export class PaymentCreatedListener extends Listener<PaymentCreatedEvent> {
         });
         await order.save();
 
+        //TODO emit order updated event
+        // if there are ever any other changes to this entity
+
         msg.ack();
     }
 }
