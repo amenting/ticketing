@@ -20,7 +20,9 @@ use "ts-node-dev --poll src/index.ts" in package.json "start" script.
 
 Cert error: just type "thisisunsafe" into the chrome tab...
 
-# Prod / Github deployment to DigitalOcean
+# Prod
+
+## Github deployment to DigitalOcean
 
  * Setup DigitalOcean account
  * Setup Kubernetes Cluster & doctl
@@ -29,8 +31,17 @@ Cert error: just type "thisisunsafe" into the chrome tab...
     * kubectl create secret generic jwt-secret --from-literal=JWT-KEY=--keyHere--
     * kubectl create secret generic stripe-secret --from-literal=STRIPE-KEY=--keyHere--
  * Buy domain & update infra/k8s-prod deploy-manifests.yaml
+ * Update clients build-client.js baseUrl property to new domain (http://...)
+ * Setup Loadbalancer: https://www.udemy.com/course/microservices-with-node-js-and-react/learn/lecture/20144736#content
+ * Update app.ts to always use "secure:false"
  * Add keys / secrets to github (see deploy-*.yaml)
  * Rename workflows for digitalOcean to enable auto-deployment on push
+
+ ## Teardown
+
+ * Destroy the cluster & load balancer on Digital Ocean
+ * Cancel Domain
+ * optional: Remove GitHub actions & secrets
 
 # Notes
 
@@ -42,7 +53,14 @@ https://www.udemy.com/course/microservices-with-node-js-and-react/learn/lecture/
 # TODO
 
  * Prevent Express from closing NATS connect on errors
+ * Add https for DO: cert-manager.io
+ * Add email support: mailchimp/sendgrid/similar
+ * Add 'build' steps for prod cluster (create Dockerfile for prod style build)
+ * Create a staging cluster / staging branch with corresponding actions to be able to test before deployments
+ * Add additional functions & services
 
 # Resources
 
+ * Domain Names Cheap: namecheap.com
+ * Domain linking: https://www.udemy.com/course/microservices-with-node-js-and-react/learn/lecture/19989504
  * https://www.udemy.com/course/microservices-with-node-js-and-react
