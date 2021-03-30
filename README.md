@@ -1,15 +1,15 @@
 Ticketing Sample App
 ---
 
-# Prerequisites:
-docker with kubernetes
-kubernetes.github.io/ingress-nginx
-npm
-typescript
+# Prerequisites
+ * docker with kubernetes
+ * kubernetes.github.io/ingress-nginx
+ * npm
+ * typescript
 
 # Development
 Runs with skaffold in a local kubernetes cluster.
-Possibly just run in google cloud if pc is too slow.
+Possibly needs to run in google cloud / digital ocean if your computer is too slow.
 
 Run with:
 
@@ -40,20 +40,22 @@ Cert error: just type "thisisunsafe" into the chrome tab...
  ## Teardown
 
  * Destroy the cluster & load balancer on Digital Ocean
- * Cancel Domain
+ * Cancel Domain Name
  * optional: Remove GitHub actions & secrets
 
 # Notes
 
 ## Correct Event Publishing for Prod
-We should really save the event to an event queue in a transaction with the ticket and then send the event in another process...
+
+Stephen Grider: "We should really save the event to an event queue in a transaction with the ticket and then send the event in another process..."
 see:
 https://www.udemy.com/course/microservices-with-node-js-and-react/learn/lecture/19485352
 
 # TODO
 
- * Prevent Express from closing NATS connect on errors
- * Add https for DO: cert-manager.io
+ * Prevent Express from closing NATS connect on errors (should just retry next time around)
+ * Add more monitoring & error handling around erroneous messages
+ * Add https for prod-cloud: cert-manager.io
  * Add email support: mailchimp/sendgrid/similar
  * Add 'build' steps for prod cluster (create Dockerfile for prod style build)
  * Create a staging cluster / staging branch with corresponding actions to be able to test before deployments
