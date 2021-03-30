@@ -15,6 +15,9 @@ spec:
       containers:
         - name: client
           image: amenting/client
+          env:
+            - name: NEXT_PUBLIC_STRIPE_ID
+              value: pk_test_51IaNDHB83McOjGs7e4nq3dRJz5KnF4HbM9RJ8lV7UGVWGGHPspgT41H18Wi4dBwsD6QhLVA4KyrQ2ip1X60J6NCC00tcruLJ3u
 ---
 apiVersion: v1
 kind: Service
